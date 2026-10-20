@@ -1,0 +1,132 @@
+{
+  "name": "bateo",
+  "private": true,
+  "version": "1.0.0",
+  "description": "BATEO — öğrenci çalışma ve planlama merkezi",
+  "author": "BATEO",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "oxlint",
+    "typecheck": "tsc -b",
+    "smoke": "electron scripts/smoke.cjs",
+    "smoke:editor": "electron scripts/smoke-editor.cjs",
+    "smoke:sync": "electron scripts/smoke-sync.cjs",
+    "smoke:cloud": "electron scripts/smoke-gate.cjs",
+    "smoke:gate": "electron scripts/smoke-gate.cjs",
+    "test:cloud": "node scripts/test-cloud.mjs",
+    "test:app:sync": "electron scripts/test-app-sync.cjs",
+    "test:reminders": "electron scripts/test-reminders.cjs",
+    "test:wipe": "electron scripts/test-wipe.cjs",
+    "test:web": "electron scripts/test-web.cjs",
+    "test:onboarding": "electron scripts/test-onboarding.cjs",
+    "diagnose": "electron scripts/diagnose.cjs",
+    "diagnose:real": "electron scripts/diagnose-real.cjs",
+    "assets": "electron scripts/gen-assets.cjs",
+    "pwa:icons": "electron scripts/gen-pwa-icons.cjs",
+    "web:build": "cross-env BATEO_TARGET=web vite build",
+    "web": "npm run web:build && vite preview --port 4173 --strictPort --open",
+    "web:serve": "vite preview --port 4173 --strictPort",
+    "cap:sync": "npm run build && cap sync android",
+    "cap:open": "cap open android",
+    "cap:run": "npm run cap:sync && cap run android",
+    "android:apk": "npm run cap:sync && powershell -ExecutionPolicy Bypass -File scripts/build-apk.ps1",
+    "electron:dev": "concurrently -k -n VITE,ELECTRON -c cyan,magenta \"vite\" \"wait-on tcp:127.0.0.1:5173 && electron .\"",
+    "electron:build": "npm run build && electron-builder --win"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/cli": "^8.5.3",
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/local-notifications": "^8.3.1",
+    "@capacitor/splash-screen": "^8.0.2",
+    "@capacitor/status-bar": "^8.0.4",
+    "@radix-ui/react-checkbox": "^1.4.1",
+    "@radix-ui/react-dialog": "^1.3.1",
+    "@radix-ui/react-dropdown-menu": "^2.2.1",
+    "@radix-ui/react-popover": "^1.3.1",
+    "@radix-ui/react-progress": "^1.2.1",
+    "@radix-ui/react-select": "^2.4.1",
+    "@radix-ui/react-slider": "^1.6.1",
+    "@radix-ui/react-switch": "^1.4.1",
+    "@radix-ui/react-tabs": "^1.2.1",
+    "@radix-ui/react-tooltip": "^1.4.1",
+    "@supabase/supabase-js": "^2.118.0",
+    "@tiptap/extension-highlight": "^3.32.0",
+    "@tiptap/extension-image": "^3.32.0",
+    "@tiptap/extension-link": "^3.32.0",
+    "@tiptap/extension-placeholder": "^3.32.0",
+    "@tiptap/extension-text-align": "^3.32.0",
+    "@tiptap/extension-text-style": "^3.32.0",
+    "@tiptap/extension-underline": "^3.32.0",
+    "@tiptap/pm": "^3.32.0",
+    "@tiptap/react": "^3.32.0",
+    "@tiptap/starter-kit": "^3.32.0",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.4.0",
+    "dexie": "^4.4.6",
+    "dexie-react-hooks": "^4.4.0",
+    "dompurify": "^3.4.17",
+    "framer-motion": "^14.3.0",
+    "marked": "^18.1.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.4",
+    "recharts": "^3.10.1",
+    "tailwind-merge": "^3.7.0",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "concurrently": "^10.0.6",
+    "cross-env": "^10.1.0",
+    "electron": "^44.8.0",
+    "electron-builder": "^26.15.3",
+    "oxlint": "^1.81.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0",
+    "vite-plugin-pwa": "^2.0.0",
+    "wait-on": "^9.5.1"
+  },
+  "build": {
+    "appId": "com.bateo.app",
+    "productName": "BATEO",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "assets/bateo-icon.ico",
+      "package.json"
+    ],
+    "win": {
+      "icon": "assets/bateo-icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "BATEO"
+    }
+  }
+}

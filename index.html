@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="tr" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./pwa-192.png" />
+    <link rel="apple-touch-icon" href="./pwa-192.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0d0f16" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="description" content="BATEO — ders çalışma, not alma ve planlama merkezin." />
+    <title>BATEO</title>
+    <!--
+      Tema, ilk boyamadan ÖNCE uygulanır (önbellekten) → tema/arka plan "sonradan gelme" flash'ı olmaz.
+      useSettings() bu önbelleği her ayar değişiminde günceller.
+    -->
+    <script>
+      (function () {
+        try {
+          var raw = localStorage.getItem("bateo:theme");
+          if (!raw) return;
+          var t = JSON.parse(raw);
+          var r = document.documentElement;
+          if (t.dark) r.classList.add("dark");
+          else r.classList.remove("dark");
+          if (t.id) r.dataset.theme = t.id;
+          var v = t.vars || {};
+          for (var k in v) {
+            if (Object.prototype.hasOwnProperty.call(v, k)) r.style.setProperty(k, v[k]);
+          }
+        } catch (e) {
+          /* yoksay */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
